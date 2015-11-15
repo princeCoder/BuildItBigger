@@ -18,6 +18,8 @@ import princecoder.androidlibrary.Home;
 public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
+    private EndpointsAsyncTaskListener mListener = null;
+    private Exception mError = null;
 
     public EndpointsAsyncTask(Context c){
         context=c;
@@ -34,16 +36,36 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
         try {
             return myApiService.sayHi().execute().getData();
         } catch (IOException e) {
+            mError = e;
             return e.getMessage();
         }
+    }
+
+    public EndpointsAsyncTask setListener(EndpointsAsyncTaskListener listener) {
+        this.mListener = listener;
+        return this;
     }
 
     @Override
     protected void onPostExecute(String result) {
 
-        //Open a new activity with the message
+        if (this.mListener != null){
+            //Open a new activity with the message
+            startNewActivity(result);
+            this.mListener.onComplete(result, mError);
+        }
+    }
+
+    public  void startNewActivity(String result) {
         Intent intent=new Intent(context, Home.class);
         intent.putExtra(Home.messageTag, result);
         context.startActivity(intent);
     }
+
+
+    public static interface EndpointsAsyncTaskListener {
+        public void onComplete(String jsonString, Exception e);
+    }
+
+
 }
