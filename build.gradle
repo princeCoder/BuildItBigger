@@ -17,3 +17,18 @@ allprojects {
         jcenter()
     }
 }
+
+
+task runAppEngine (dependsOn: [":backend:appengineRun", ":app:connectedAndroidTest", ":backend:appengineStop"]) {
+    evaluationDependsOn ":backend"
+
+    project(":backend") {
+        appengine {
+            daemon true
+        }
+    }
+
+    doLast {
+        println "All done!"
+    }
+}

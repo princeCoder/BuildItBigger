@@ -72,10 +72,12 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
     public  void startNewActivity(String result) {
 
-        if (mFragment != null) {// I make the test because for some reasons, it can happen that when the activity get destroy, we don't have the reference of the new one, just for some milliseconds
+        if(context!=null){
             Intent intent=new Intent(context, Home.class);
             intent.putExtra(Home.messageTag, result);
             context.startActivity(intent);
+        }
+        if (mFragment != null) {// I make the test because for some reasons, it can happen that when the activity get destroy, we don't have the reference of the new one, just for some milliseconds
             if((((MainActivityFragment)mFragment).getSpinner()!=null))
             mFragment.afterFetching();
 
