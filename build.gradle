@@ -18,17 +18,34 @@ allprojects {
     }
 }
 
-
-task runAppEngine (dependsOn: [":backend:appengineRun", ":app:connectedAndroidTest", ":backend:appengineStop"]) {
+task appEngineStart(dependsOn: [":backend:appengineRun"]){
     evaluationDependsOn ":backend"
-
     project(":backend") {
         appengine {
             daemon true
         }
     }
 
+}
+
+task runTest(dependsOn: [":app:connectedAndroidTest"]){
+    shouldRunAfter "appEngineStart"
+}
+
+task appEngineStop(dependsOn: [":backend:appengineStop"]){
+    evaluationDependsOn ":backend"
+    project(":backend") {
+        appengine {
+            daemon true
+        }
+    }
+
+    shouldRunAfter "runTest"
+}
+
+task runAppEngine (dependsOn: ["appEngineStart", "runTest", "appEngineStop"]) {
+
     doLast {
-        println "All done!"
+        println("Good job !!!")
     }
 }
