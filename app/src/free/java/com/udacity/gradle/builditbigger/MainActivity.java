@@ -1,22 +1,28 @@
 package com.udacity.gradle.builditbigger;
 
+/**
+ * Created by Prinzly Ngotoum on 11/18/15.
+ */
+
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 /**
  * Created by Prinzly Ngotoum on 11/11/15.
  */
 public class MainActivity extends AppCompatActivity {
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
     }
+
 
 
     @Override
@@ -39,21 +45,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public void tellJoke(View view){
-
-//        1st Step
-//        Toast.makeText(this, MyClass.tellJoke(), Toast.LENGTH_SHORT).show();
-
-//        2nd Step
-//        Intent intent=new Intent(this, Home.class);
-//        intent.putExtra(Home.messageTag, MyClass.tellJoke());
-//        startActivity(intent);
-
-        new EndpointsAsyncTask(this).execute();
-
-
     }
 
 

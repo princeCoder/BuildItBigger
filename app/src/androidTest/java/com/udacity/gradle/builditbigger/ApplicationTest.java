@@ -31,7 +31,9 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 
     public void testEndPointAsyncTask() throws InterruptedException {
 
-        EndpointsAsyncTask task = new EndpointsAsyncTask(getApplication());
+        MainActivityFragment fragment=new MainActivityFragment();
+
+        EndpointsAsyncTask task = new EndpointsAsyncTask(getApplication(),fragment);
         task.setListener(new EndpointsAsyncTask.EndpointsAsyncTaskListener() {
             @Override
             public void onComplete(String result, Exception e) {

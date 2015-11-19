@@ -18,12 +18,24 @@ import princecoder.androidlibrary.Home;
 public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
+    private IMainFragment mFragment;
     private EndpointsAsyncTaskListener mListener = null;
     private Exception mError = null;
 
-    public EndpointsAsyncTask(Context c){
+    public EndpointsAsyncTask(Context c, IMainFragment fragment){
         context=c;
+        mFragment=fragment;
     }
+
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        if (mFragment != null) {
+            if(((MainActivityFragment)mFragment).getSpinner()!=null)
+            mFragment.beforeFetching();
+        }
+    }
+
 
     @Override
     protected String doInBackground(Void... params) {
@@ -51,21 +63,27 @@ public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
 
         if (this.mListener != null){
             //Open a new activity with the message
-            startNewActivity(result);
             this.mListener.onComplete(result, mError);
         }
+
+        startNewActivity(result);
+
     }
 
     public  void startNewActivity(String result) {
-        Intent intent=new Intent(context, Home.class);
-        intent.putExtra(Home.messageTag, result);
-        context.startActivity(intent);
-    }
 
+        if (mFragment != null) {// I make the test because for some reasons, it can happen that when the activity get destroy, we don't have the reference of the new one, just for some milliseconds
+            Intent intent=new Intent(context, Home.class);
+            intent.putExtra(Home.messageTag, result);
+            context.startActivity(intent);
+            if((((MainActivityFragment)mFragment).getSpinner()!=null))
+            mFragment.afterFetching();
+
+        }
+
+    }
 
     public static interface EndpointsAsyncTaskListener {
         public void onComplete(String jsonString, Exception e);
     }
-
-
 }
