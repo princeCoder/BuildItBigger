@@ -15,7 +15,6 @@ This project is one of the task of the Udacity Android Nanodegree
 Here I have created a test case class to retreive the joke from the java Library
 <br/>
 
-`
 public void testEndPointAsyncTask() throws InterruptedException {
         MainActivityFragment fragment=new MainActivityFragment();
         EndpointsAsyncTask task = new EndpointsAsyncTask(getApplication(),fragment);
@@ -32,7 +31,4 @@ public void testEndPointAsyncTask() throws InterruptedException {
         assertFalse(TextUtils.isEmpty(mResult));
         assertTrue(mResult.equalsIgnoreCase("This is the Java Joke Library"));
         
- }
- `
-    
-
+}
